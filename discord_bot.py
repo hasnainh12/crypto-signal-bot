@@ -3,8 +3,9 @@ import pandas as pd
 import requests
 import time
 from datetime import datetime
+import os
 
-WEBHOOK_URL = "https://discord.com/api/webhooks/1506049506347716640/PhyFEl7csbfiJiucufRwhHmAy7yB-9RgbDSyFUTBt-5XWFElCt_VYPMHmjIKGKr06OEn"
+WEBHOOK_URL = os.environ.get("WEBHOOK_URLhttps://discord.com/api/webhooks/1507873992885666012/hbwHomkZwq9CyaLF94Ocw4hioDx0uy9nfDErmPw2r9BJoj2hLmww9ZV6HwhN6_nyQM12")
 
 COINS = {
     "BTC": "BTC/USDT",
@@ -14,7 +15,7 @@ COINS = {
     "BNB": "BNB/USDT",
 }
 
-exchange = ccxt.binance()
+exchange = ccxt.kucoin()
 
 
 def send_discord(coin, data):
@@ -48,7 +49,7 @@ def send_discord(coin, data):
         else:
             print(f"❌ Discord error: {r.status_code}")
     except Exception as e:
-        print(f"❌ Discord error: {e}")
+        print(f"❌ Error: {e}")
 
 
 def get_ohlcv(symbol):
@@ -201,34 +202,34 @@ def analyze_signal(symbol):
 
 def main():
     print("=" * 40)
-    print("  CRYPTO SIGNAL BOT — Railway")
-    print(f"  Time: {datetime.now().strftime('%H:%M %d-%b')}")
+    print("  CRYPTO SIGNAL BOT — KuCoin")
+    print(f"  {datetime.now().strftime('%H:%M %d-%b')}")
     print("=" * 40)
 
-    while True:
-        print(f"\n🔍 Scan: {datetime.now().strftime('%H:%M %d-%b')}")
+    # Test message
+    requests.post(WEBHOOK_URL, json={
+        "content": "🤖 **Bot Start Ho Gaya — KuCoin API**"
+    }, timeout=30)
 
+    while True:
+        print(f"\n🔍 Scan: {datetime.now().strftime('%H:%M')}")
         for coin, symbol in COINS.items():
             print(f"{coin} check ho raha hai...")
             data = analyze_signal(symbol)
-
             if not data:
                 print(f"❌ {coin}: Data nahi mila")
                 continue
-
             print(
                 f"✅ {coin}: {data['signal']} | "
                 f"Price: {data['entry']} | "
                 f"BUY: {data['buy_score']}/8 | "
                 f"SELL: {data['sell_score']}/8"
             )
-
             if data["signal"] != "WAIT":
                 send_discord(coin, data)
-
             time.sleep(2)
 
-        print("\n⏳ Agla scan 4 ghante baad...")
+        print("⏳ Agla scan 4 ghante baad...")
         time.sleep(14400)
 
 
