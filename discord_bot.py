@@ -5,8 +5,7 @@ import time
 from datetime import datetime
 import os
 
-WEBHOOK_URL = os.environ.get("WEBHOOK_URLhttps://discord.com/api/webhooks/1507873992885666012/hbwHomkZwq9CyaLF94Ocw4hioDx0uy9nfDErmPw2r9BJoj2hLmww9ZV6HwhN6_nyQM12")
-
+WEBHOOK_URL = "https://discord.com/api/webhooks/1507873992885666012/hbwHomkZwq9CyaLF94Ocw4hioDx0uy9nfDErmPw2r9BJoj2hLmww9ZV6HwhN6_nyQM12"
 COINS = {
     "BTC": "BTC/USDT",
     "ETH": "ETH/USDT",
